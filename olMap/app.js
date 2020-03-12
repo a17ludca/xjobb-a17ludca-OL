@@ -19,6 +19,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// gathering json-files
+app.get('/data/mapBorders.json', (req, res) =>{
+  res.sendFile(path.join(__dirname, '/data/mapBorders.json'));
+});
+
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
