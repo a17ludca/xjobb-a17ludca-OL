@@ -5,10 +5,10 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(l3map);
 
-var svg = d3.select(myMap.getPanes().overlayPane).append("svg"),
+var svg = d3.select(l3map.getPanes().overlayPane).append("svg"),
     g = svg.append("g").attr("class", "leaflet-zoom-hide");
 
-d3.json("./data/mapBorders.json", function(error, collection) {
+d3.json("data/mapBorders.json", function(error, collection) {
     if (error) throw error;
     var transform = d3.geo.transform({point: projectPoint}),
         path = d3.geo.path().projection(transform);
@@ -17,7 +17,7 @@ d3.json("./data/mapBorders.json", function(error, collection) {
         .data(collection.features)
         .enter().append("path");
         
-    myMap.on("zoom", reset);
+    l3map.on("zoom", reset);
     reset();
     
     function reset(){
@@ -35,7 +35,7 @@ d3.json("./data/mapBorders.json", function(error, collection) {
     }
     
     function projectPoint(x, y) {
-        var point = myMap.latLngToLayerPoint(new L.LatLng(y, x));
+        var point = l3map.latLngToLayerPoint(new L.LatLng(y, x));
         this.stream.point(point.x, point.y);
     }
 });
