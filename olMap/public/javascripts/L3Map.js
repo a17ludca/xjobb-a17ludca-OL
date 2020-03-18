@@ -11,6 +11,12 @@ var offsetT = document.getElementById('l3Map').offsetTop+10;
 var svg = d3.select(l3map.getPanes().overlayPane).append("svg"),
     g = svg.append("g").attr("class", "leaflet-zoom-hide");
 
+
+var countryName = d3.select("#l3Map")
+    .append("div")
+    .attr("class", "countryName hidden");
+
+
 d3.json("data/mapBorders.json", function(error, collection) {
     if (error) throw error;
     var transform = d3.geo.transform({point: projectPoint}),

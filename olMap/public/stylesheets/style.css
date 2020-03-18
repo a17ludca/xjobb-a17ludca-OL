@@ -25,3 +25,12 @@ path:hover {
   fill: blue;
   fill-opacity: 1;
 }
+
+div.countryName {
+  color: black;
+  background: white;
+  border-radius: 2px;
+  box-shadow: 0px 0px 2px 0px #000;
+  opacity: 0.8;
+  position: absolute;
+}
