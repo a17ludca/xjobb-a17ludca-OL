@@ -5,12 +5,13 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(l3map);
 
-var offsetL = document.getElementById('l3Map').offsetLeft+10;
-var offsetT = document.getElementById('l3Map').offsetTop+10;
+
 
 var svg = d3.select(l3map.getPanes().overlayPane).append("svg"),
     g = svg.append("g").attr("class", "leaflet-zoom-hide");
 
+var offsetL = document.getElementById('l3Map').offsetLeft+10;
+var offsetT = document.getElementById('l3Map').offsetTop+10;
 
 var countryName = d3.select("#l3Map")
     .append("div")
@@ -54,6 +55,7 @@ d3.json("data/mapBorders.json", function(error, collection) {
         var point = l3map.latLngToLayerPoint(new L.LatLng(y, x));
         this.stream.point(point.x, point.y);
     }
+    
 });
 
 function showCountry(d){
@@ -61,7 +63,7 @@ function showCountry(d){
     var mouse = d3.mouse(svg.node())
         .map(function(d) {return parseInt(d);});
     countryName.classed("hidden", false)
-        .attr("style", "left:"+(mouse[0]+offsetL)+"px;top:"+(mouse[1]+offsetT)+"px")
+        .attr("style", "left:"+(mouse[0]+offsetL)+"px; top:"+(mouse[1]+offsetT)+"px; "+"z-index: 400;")
         .html(label);
 }
 
