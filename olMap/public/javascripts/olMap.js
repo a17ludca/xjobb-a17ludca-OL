@@ -31,6 +31,7 @@ const olmap = new ol.Map({
         zoom: 4
     })
 })
+console.log(vectorLayer);
 
 var highlightStyles = new ol.style.Style({
     fill: new ol.style.Fill({

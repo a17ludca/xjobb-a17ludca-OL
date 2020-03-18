@@ -20,3 +20,8 @@ path:hover {
   fill: blue;
   fill-opacity: .6;
 }
+
+.clicked {
+  fill: blue;
+  fill-opacity: 1;
+}

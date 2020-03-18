@@ -5,6 +5,9 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(l3map);
 
+var offsetL = document.getElementById('l3Map').offsetLeft+10;
+var offsetT = document.getElementById('l3Map').offsetTop+10;
+
 var svg = d3.select(l3map.getPanes().overlayPane).append("svg"),
     g = svg.append("g").attr("class", "leaflet-zoom-hide");
 
@@ -15,22 +18,29 @@ d3.json("data/mapBorders.json", function(error, collection) {
     
     var feature = g.selectAll("path")
         .data(collection.features)
-        .enter().append("path");
-        
+        .enter().append("path")
+        .attr("name", function(d){return d.properties.name;})
+        .on("click", clicked)
+        .on("mousemove", showCountry)
+        .on("mouseout", function(d, i){
+            countryName.classed("hidden", true);
+        });
+
+    
     l3map.on("zoom", reset);
     reset();
-    
+
     function reset(){
         var bounds = path.bounds(collection),
             topLeft = bounds[0],
             bottomRight = bounds[1];
-            
             svg .attr("width", bottomRight[0] - topLeft[0])
             .attr("height", bottomRight[1] - topLeft[1])
             .style("left", topLeft[0] + "px")
             .style("top", topLeft[1] + "px");
             
-        svg.selectAll("g").attr("transform", "translate(" + -topLeft[0] + "," + -topLeft[1] + ")");     
+        svg.selectAll("g")
+            .attr("transform", "translate(" + -topLeft[0] + "," + -topLeft[1] + ")")    
         feature.attr("d", path);
     }
     
@@ -39,3 +49,18 @@ d3.json("data/mapBorders.json", function(error, collection) {
         this.stream.point(point.x, point.y);
     }
 });
+
+function showCountry(d){
+    label = d.properties.name;
+    var mouse = d3.mouse(svg.node())
+        .map(function(d) {return parseInt(d);});
+    countryName.classed("hidden", false)
+        .attr("style", "left:"+(mouse[0]+offsetL)+"px;top:"+(mouse[1]+offsetT)+"px")
+        .html(label);
+}
+
+function clicked() {
+    d3.select('.clicked').classed('clicked', false);
+    d3.select(this).classed('clicked', true);
+}
+
