@@ -18,7 +18,7 @@ var countryName = d3.select("#l3Map")
     .attr("class", "countryName hidden");
 
 
-d3.json("data/mapBorders.json", function(error, collection) {
+d3.json("data/countries.geojson", function(error, collection) {
     if (error) throw error;
     var transform = d3.geo.transform({point: projectPoint}),
         path = d3.geo.path().projection(transform);

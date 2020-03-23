@@ -9,7 +9,7 @@ var styles = new ol.style.Style({
 });
 
 var vectorSource = new ol.source.Vector({
-    url: 'data/mapBorders.json',
+    url: 'data/countries.geojson',
     format: new ol.format.GeoJSON()
 })
 
@@ -30,8 +30,9 @@ const olmap = new ol.Map({
         center: [37.8, -96.9],
         zoom: 4
     })
-})
-console.log(vectorLayer);
+});
+
+console.log(vectorSource);
 
 var highlightStyles = new ol.style.Style({
     fill: new ol.style.Fill({
