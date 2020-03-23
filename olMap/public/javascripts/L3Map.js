@@ -5,7 +5,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(l3map);
 
-
+var overlay = "data/countries.geojson";
 
 var svg = d3.select(l3map.getPanes().overlayPane).append("svg"),
     g = svg.append("g").attr("class", "leaflet-zoom-hide");
@@ -18,7 +18,7 @@ var countryName = d3.select("#l3Map")
     .attr("class", "countryName hidden");
 
 
-d3.json("data/countries.geojson", function(error, collection) {
+d3.json(overlay, function(error, collection) {
     if (error) throw error;
     var transform = d3.geo.transform({point: projectPoint}),
         path = d3.geo.path().projection(transform);
