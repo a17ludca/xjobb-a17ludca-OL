@@ -10,9 +10,6 @@ var overlay = "data/countries.geojson";
 var svg = d3.select(l3map.getPanes().overlayPane).append("svg"),
     g = svg.append("g").attr("class", "leaflet-zoom-hide");
 
-var offsetL = document.getElementById('l3Map').offsetLeft+10;
-var offsetT = document.getElementById('l3Map').offsetTop+10;
-
 var countryName = d3.select("#l3Map")
     .append("div")
     .attr("class", "countryName hidden");
@@ -26,9 +23,9 @@ d3.json(overlay, function(error, collection) {
     var feature = g.selectAll("path")
         .data(collection.features)
         .enter().append("path")
-        .attr("name", function(d){return d.properties.name;})
+        .attr("name", function(d){return d.properties.ADMIN;})
         .on("click", clicked)
-        .on("mousemove", showCountry)
+        .on("mousemove", showCountry, reset)
         .on("mouseout", function(d, i){
             countryName.classed("hidden", true);
         });
@@ -56,19 +53,22 @@ d3.json(overlay, function(error, collection) {
         this.stream.point(point.x, point.y);
     }
     
+    
 });
 
+
 function showCountry(d){
-    label = d.properties.name;
+    label = d.properties.ADMIN;
     var mouse = d3.mouse(svg.node())
         .map(function(d) {return parseInt(d);});
     countryName.classed("hidden", false)
-        .attr("style", "left:"+(mouse[0]+offsetL)+"px; top:"+(mouse[1]+offsetT)+"px; "+"z-index: 400;")
+        .attr("style", "left:"+(d3.event.pageX)+"px; top:"+(d3.event.pageY)+"px; "+"z-index: 400;")
         .html(label);
 }
 
 function clicked() {
     d3.select('.clicked').classed('clicked', false);
     d3.select(this).classed('clicked', true);
+    
 }
 
