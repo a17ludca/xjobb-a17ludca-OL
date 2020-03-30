@@ -10,10 +10,6 @@ var overlay = "data/countries.geojson";
 var svg = d3.select(l3map.getPanes().overlayPane).append("svg"),
     g = svg.append("g").attr("class", "leaflet-zoom-hide");
 
-var countryName = d3.select("#l3Map")
-    .append("div")
-    .attr("class", "countryName hidden");
-
 
 d3.json(overlay, function(error, collection) {
     if (error) throw error;
@@ -24,11 +20,7 @@ d3.json(overlay, function(error, collection) {
         .data(collection.features)
         .enter().append("path")
         .attr("name", function(d){return d.properties.ADMIN;})
-        .on("click", function(b){clicked.call(this); findCountry(b);})
-        .on("mousemove", showCountry)
-        .on("mouseout", function(d, i){
-            countryName.classed("hidden", true);
-        });
+        .on("click", function(b){clicked.call(this); findCountry(b);});
 
     
     l3map.on("zoom", reset);
@@ -56,14 +48,6 @@ d3.json(overlay, function(error, collection) {
     
 });
 
-
-function showCountry(d){
-    label = d.properties.ADMIN;
-    countryName.classed("hidden", false)
-        .attr("style", "left:"+(d3.event.pageX)+"px; top:"+(d3.event.pageY)+"px; "+"z-index: 400;")
-        .html(label);
-}
-
 function clicked(){
     d3.select('.clicked').classed('clicked', false);
     d3.select(this).classed('clicked', true);
@@ -74,6 +58,5 @@ function findCountry(b){
     term = b.properties.ADMIN;
     var search = document.getElementById("search");
     search.value = term;
-    console.log(search.value);
     
 }

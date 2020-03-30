@@ -6,16 +6,17 @@ var styles = new ol.style.Style({
     fill: new ol.style.Fill({
         color: 'rgba(0,0,0,0.2)'
     })
-});
+});   
 
 var vectorSource = new ol.source.Vector({
     url: 'data/countries.geojson',
-    format: new ol.format.GeoJSON()
-})
+    format: new ol.format.GeoJSON(),
+    
+});
 
 var vectorLayer = new ol.layer.Vector({
     source: vectorSource,
-    style: styles    
+    style: styles
 });
 
 const olmap = new ol.Map({
@@ -32,8 +33,6 @@ const olmap = new ol.Map({
     })
 });
 
-console.log(vectorSource);
-
 var highlightStyles = new ol.style.Style({
     fill: new ol.style.Fill({
       color: 'rgba(6,69,173,0.6)'
@@ -46,6 +45,17 @@ var highlightStyles = new ol.style.Style({
 
 var selected = null;
 
+var getCountryname = function(pixel){
+
+    var feature = olmap.forEachFeatureAtPixel(pixel, function(feature){
+        return feature;
+    });
+
+    var search = document.getElementById("search");
+
+    search.value = feature.values_.ADMIN;
+};
+
 olmap.on('pointermove', function(e){
     if (selected !== null) {
         selected.setStyle(styles);
@@ -55,4 +65,8 @@ olmap.on('pointermove', function(e){
         f.setStyle(highlightStyles);
         return true;
     });
+});
+
+olmap.on('click', function(e){
+    getCountryname(e.pixel);
 })
