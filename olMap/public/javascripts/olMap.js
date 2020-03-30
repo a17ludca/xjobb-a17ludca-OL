@@ -46,14 +46,13 @@ var highlightStyles = new ol.style.Style({
 var selected = null;
 
 var getCountryname = function(pixel){
-
     var feature = olmap.forEachFeatureAtPixel(pixel, function(feature){
         return feature;
     });
-
     var search = document.getElementById("search");
-
-    search.value = feature.values_.ADMIN;
+    if(feature){
+        search.value = feature.values_.ADMIN;
+    }
 };
 
 olmap.on('pointermove', function(e){
@@ -69,4 +68,4 @@ olmap.on('pointermove', function(e){
 
 olmap.on('click', function(e){
     getCountryname(e.pixel);
-})
+});
