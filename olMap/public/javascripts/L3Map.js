@@ -24,8 +24,8 @@ d3.json(overlay, function(error, collection) {
         .data(collection.features)
         .enter().append("path")
         .attr("name", function(d){return d.properties.ADMIN;})
-        .on("click", clicked)
-        .on("mousemove", showCountry, reset)
+        .on("click", function(b){clicked.call(this); findCountry(b);})
+        .on("mousemove", showCountry)
         .on("mouseout", function(d, i){
             countryName.classed("hidden", true);
         });
@@ -59,16 +59,21 @@ d3.json(overlay, function(error, collection) {
 
 function showCountry(d){
     label = d.properties.ADMIN;
-    var mouse = d3.mouse(svg.node())
-        .map(function(d) {return parseInt(d);});
     countryName.classed("hidden", false)
         .attr("style", "left:"+(d3.event.pageX)+"px; top:"+(d3.event.pageY)+"px; "+"z-index: 400;")
         .html(label);
 }
 
-function clicked() {
+function clicked(){
     d3.select('.clicked').classed('clicked', false);
     d3.select(this).classed('clicked', true);
     
 }
 
+function findCountry(b){
+    term = b.properties.ADMIN;
+    var search = document.getElementById("search");
+    search.value = term;
+    console.log(search.value);
+    
+}
