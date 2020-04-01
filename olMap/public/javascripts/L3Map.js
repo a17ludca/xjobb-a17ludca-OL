@@ -60,3 +60,7 @@ function findCountry(b){
     search.value = term;
     
 }
+
+var loadTime = window.performance.timing.connectEnd - window.performance.timing.loadEventEnd;
+
+console.log(window.performance.timing.connectEnd, "-", window.performance.timing.loadEventEnd, "=", loadTime);

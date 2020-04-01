@@ -69,3 +69,12 @@ olmap.on('pointermove', function(e){
 olmap.on('click', function(e){
     getCountryname(e.pixel);
 });
+
+vectorLayer.on("tileloadstart", function(){
+    var loadTime = performance.now();
+    return loadTime;
+});
+
+vectorLayer.on("tileloadend", function(){
+    console.log(loadTime - performance.now());
+})
