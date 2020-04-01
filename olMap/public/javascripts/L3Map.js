@@ -1,4 +1,4 @@
-L_DISABLE_3D = true;
+var startTime = performance.now();
 var l3map = L.map('l3Map').setView([37.8, -96.9], 4);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -44,8 +44,18 @@ d3.json(overlay, function(error, collection) {
         var point = l3map.latLngToLayerPoint(new L.LatLng(y, x));
         this.stream.point(point.x, point.y);
     }
+
+    function measureZoom(){
+        console.log(performance.now());
+    }
+
+    d3.select(".leaflet-control-zoom-in")
+        .on("click", measureZoom);
     
-    
+    var newTime = performance.now();
+    var loadTime = newTime - startTime;
+    console.log("Loadtime: " + loadTime + " ms");
+    console.log(zoomStart);
 });
 
 function clicked(){
@@ -58,9 +68,5 @@ function findCountry(b){
     term = b.properties.ADMIN;
     var search = document.getElementById("search");
     search.value = term;
-    
 }
 
-var loadTime = window.performance.timing.connectEnd - window.performance.timing.loadEventEnd;
-
-console.log(window.performance.timing.connectEnd, "-", window.performance.timing.loadEventEnd, "=", loadTime);

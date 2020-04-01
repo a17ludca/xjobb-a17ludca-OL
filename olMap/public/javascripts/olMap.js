@@ -1,3 +1,5 @@
+var startTime = performance.now();
+
 var styles = new ol.style.Style({
     stroke: new ol.style.Stroke({
         color: 'white',
@@ -70,11 +72,9 @@ olmap.on('click', function(e){
     getCountryname(e.pixel);
 });
 
-vectorLayer.on("tileloadstart", function(){
-    var loadTime = performance.now();
-    return loadTime;
-});
-
-vectorLayer.on("tileloadend", function(){
-    console.log(loadTime - performance.now());
+olmap.on("rendercomplete", function(){
+    var newTime = performance.now();
+    var loadTime = newTime-startTime;
+    console.log("Loadtime: " + loadTime + " ms");
+    startTime = performance.now();
 })
