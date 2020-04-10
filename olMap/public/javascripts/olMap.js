@@ -45,7 +45,18 @@ var highlightStyles = new ol.style.Style({
     })
 });
 
+var clickedStyles = new ol.style.Style({
+    fill: new ol.style.Fill({
+      color: 'rgba(6,69,173,1)'
+    }),
+    stroke: new ol.style.Stroke({
+      color: 'white',
+      width: 1
+    })
+});
+
 var selected = null;
+var featureClicked = null;
 
 var getCountryname = function(pixel){
     var feature = olmap.forEachFeatureAtPixel(pixel, function(feature){
@@ -58,7 +69,7 @@ var getCountryname = function(pixel){
 };
 
 olmap.on('pointermove', function(e){
-    if (selected !== null) {
+    if (selected !== null && featureClicked == null) {
         selected.setStyle(styles);
     }
     olmap.forEachFeatureAtPixel(e.pixel, function(f){
@@ -70,6 +81,14 @@ olmap.on('pointermove', function(e){
 
 olmap.on('click', function(e){
     getCountryname(e.pixel);
+    if (featureClicked !== null) {
+        featureClicked.setStyle(styles);
+    }
+    olmap.forEachFeatureAtPixel(e.pixel, function(f){
+        featureClicked = f;
+        f.setStyle(clickedStyles);
+        return true;
+    });
 });
 
 olmap.on("rendercomplete", function(){
