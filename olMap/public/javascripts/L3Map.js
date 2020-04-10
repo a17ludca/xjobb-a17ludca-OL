@@ -51,9 +51,8 @@ d3.json(overlay, function(collection) {
 function clicked(){
     console.log("before");
     if(!d3.select(this).classed('clicked')){
-        d3.select(this).classed('clicked', true);
         d3.select('.clicked').classed('clicked', false);
-        
+        d3.select(this).classed('clicked', true);
     }else{
         d3.select(this).classed('clicked', false);
         console.log("after");
