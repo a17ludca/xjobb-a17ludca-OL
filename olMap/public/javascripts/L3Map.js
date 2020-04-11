@@ -21,7 +21,7 @@ d3.json(overlay, function(collection) {
     var feature = g.selectAll("path")
         .data(collection.features)
         .enter().append("path")
-        .on("click", function(b){findCountry(b); clicked.call(this);});
+        .on("click", function(b){findCountry(b); clicked.call(this, onclickTimer());});
 
     l3map.on("zoom", reset);
     reset();
@@ -45,23 +45,26 @@ d3.json(overlay, function(collection) {
         this.stream.point(point.x, point.y);
     }
     newTime = performance.now();
-    loadTime = newTime - startTime;
-    console.log("Loadtime: " + loadTime + " ms");
+    console.log("Loadtime: " + (newTime - startTime) + " ms");
 });
 
-function clicked(){
+function clicked(onclickTimer){
     if(!d3.select(this).classed('clicked')){
         d3.select('.clicked').classed('clicked', false);
         d3.select(this).classed('clicked', true);
     }else{
         d3.select(this).classed('clicked', false);
         search.value = "";
-        
     }
+    var onclickEnd = performance.now();
+    console.log("Load for click: " + (onclickEnd - onclickTimer) + " ms");
+}
+var onclickTimer = function(){
+    var temp = performance.now();
+    return temp;
 }
 
 function findCountry(b){
     term = b.properties.ADMIN;
     search.value = term;
 }
-
