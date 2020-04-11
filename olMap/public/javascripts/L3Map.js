@@ -55,7 +55,6 @@ function clicked(){
         d3.select(this).classed('clicked', true);
     }else{
         d3.select(this).classed('clicked', false);
-        console.log("empty");
         search.value = "";
         
     }
@@ -64,6 +63,5 @@ function clicked(){
 function findCountry(b){
     term = b.properties.ADMIN;
     search.value = term;
-    console.log("before?");
 }
 
