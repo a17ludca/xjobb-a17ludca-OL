@@ -2,6 +2,7 @@ var startTime = performance.now();
 var newTime;
 var loadTime;
 var l3map = L.map('l3Map').setView([37.8, -96.9], 4);
+var search = document.getElementById("search");
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -20,7 +21,7 @@ d3.json(overlay, function(collection) {
     var feature = g.selectAll("path")
         .data(collection.features)
         .enter().append("path")
-        .on("click", function(b){clicked.call(this); findCountry(b);});
+        .on("click", function(b){findCountry(b); clicked.call(this);});
 
     l3map.on("zoom", reset);
     reset();
@@ -49,19 +50,20 @@ d3.json(overlay, function(collection) {
 });
 
 function clicked(){
-    console.log("before");
     if(!d3.select(this).classed('clicked')){
         d3.select('.clicked').classed('clicked', false);
         d3.select(this).classed('clicked', true);
     }else{
         d3.select(this).classed('clicked', false);
-        console.log("after");
+        console.log("empty");
+        search.value = "";
+        
     }
 }
 
 function findCountry(b){
     term = b.properties.ADMIN;
-    var search = document.getElementById("search");
     search.value = term;
+    console.log("before?");
 }
 
