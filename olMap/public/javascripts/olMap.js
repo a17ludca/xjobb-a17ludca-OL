@@ -1,4 +1,6 @@
 var startTime = performance.now();
+var newTime;
+var i = 0;
 
 var styles = new ol.style.Style({
     stroke: new ol.style.Stroke({
@@ -26,9 +28,8 @@ const olmap = new ol.Map({
     layers: [
         new ol.layer.Tile({
             source: new ol.source.OSM()
-        }),
-        vectorLayer
-    ],
+        }), vectorLayer
+    ], 
     view: new ol.View({
         center: [37.8, -96.9],
         zoom: 4
@@ -91,9 +92,9 @@ olmap.on('click', function(e){
     });
 });
 
-olmap.on("rendercomplete", function(){
-    var newTime = performance.now();
-    var loadTime = newTime-startTime;
-    console.log("Loadtime: " + loadTime + " ms");
-    startTime = performance.now();
-})
+olmap.on('postrender', function(){
+    newTime = performance.now();
+    console.log("Loadtime: " + (newTime - startTime) + " ms", i++);
+});
+
+
