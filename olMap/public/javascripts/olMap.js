@@ -4,7 +4,7 @@ var i = 0;
 
 var styles = new ol.style.Style({
     stroke: new ol.style.Stroke({
-        color: 'black',
+        color: 'white',
         width: 1  
     }),
     fill: new ol.style.Fill({
@@ -17,7 +17,7 @@ var highlightStyles = new ol.style.Style({
       color: 'rgba(6,69,173,0.6)'
     }),
     stroke: new ol.style.Stroke({
-      color: 'black',
+      color: 'white',
       width: 1
     })
 });
@@ -27,8 +27,8 @@ var clickedStyles = new ol.style.Style({
       color: 'rgba(6,69,173,1)'
     }),
     stroke: new ol.style.Stroke({
-      color: 'black',
-      width: 3
+      color: 'white',
+      width: 1
     })
 });
 
@@ -73,6 +73,9 @@ olmap.on('pointermove', function(e){
     if (selected !== null) {
         selected.setStyle(undefined);
         selected = null;
+    }
+    if(selected.setStyle(clickedStyles)){
+
     }
     olmap.forEachFeatureAtPixel(e.pixel, function(f){
         selected = f;
