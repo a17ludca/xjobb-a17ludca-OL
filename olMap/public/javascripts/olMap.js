@@ -92,7 +92,7 @@ olmap.on('click', function(e){
     });
 });
 
-olmap.on('postrender', function(){
+olmap.on('rendercomplete', function(){
     newTime = performance.now();
     console.log("Loadtime: " + (newTime - startTime) + " ms", i++);
 });
