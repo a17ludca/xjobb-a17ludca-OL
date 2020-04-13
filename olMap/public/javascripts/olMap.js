@@ -4,13 +4,33 @@ var i = 0;
 
 var styles = new ol.style.Style({
     stroke: new ol.style.Stroke({
-        color: 'white',
+        color: 'black',
         width: 1  
     }),
     fill: new ol.style.Fill({
         color: 'rgba(0,0,0,0.2)'
     })
-});   
+});  
+
+var highlightStyles = new ol.style.Style({
+    fill: new ol.style.Fill({
+      color: 'rgba(6,69,173,0.6)'
+    }),
+    stroke: new ol.style.Stroke({
+      color: 'black',
+      width: 1
+    })
+});
+
+var clickedStyles = new ol.style.Style({
+    fill: new ol.style.Fill({
+      color: 'rgba(6,69,173,1)'
+    }),
+    stroke: new ol.style.Stroke({
+      color: 'black',
+      width: 3
+    })
+});
 
 var vectorSource = new ol.source.Vector({
     url: 'data/countries.geojson',
@@ -23,38 +43,18 @@ var vectorLayer = new ol.layer.Vector({
     style: styles
 });
 
+var osmMap = new ol.layer.Tile({
+    source: new ol.source.OSM()
+});
+
 const olmap = new ol.Map({
     target: 'olMap',
-    layers: [
-        new ol.layer.Tile({
-            source: new ol.source.OSM()
-        }), vectorLayer
-    ], 
+    layers: [osmMap, vectorLayer], 
     view: new ol.View({
         center: [37.8, -96.9],
         zoom: 4
     })
-});
-
-var highlightStyles = new ol.style.Style({
-    fill: new ol.style.Fill({
-      color: 'rgba(6,69,173,0.6)'
-    }),
-    stroke: new ol.style.Stroke({
-      color: 'white',
-      width: 1
-    })
-});
-
-var clickedStyles = new ol.style.Style({
-    fill: new ol.style.Fill({
-      color: 'rgba(6,69,173,1)'
-    }),
-    stroke: new ol.style.Stroke({
-      color: 'white',
-      width: 1
-    })
-});
+}); 
 
 var selected = null;
 var featureClicked = null;
@@ -70,11 +70,9 @@ var getCountryname = function(pixel){
 };
 
 olmap.on('pointermove', function(e){
-    if (selected !== null && featureClicked == null) {
+    if (selected !== null) {
         selected.setStyle(undefined);
         selected = null;
-    }else if(featureClicked !== null && featureClicked == selected){
-        selected.setStyle(clickedStyle);
     }
     olmap.forEachFeatureAtPixel(e.pixel, function(f){
         selected = f;
@@ -85,10 +83,10 @@ olmap.on('pointermove', function(e){
 
 olmap.on('click', function(e){
     getCountryname(e.pixel);
-    if (featureClicked !== null && selected == null) {
+    if (featureClicked !== null) {
         featureClicked.setStyle(undefined);
-        featureClicked = null;
-    }
+        featureClicked = null; 
+    } 
     olmap.forEachFeatureAtPixel(e.pixel, function(f){
         featureClicked = f;
         f.setStyle(clickedStyles);
