@@ -1,6 +1,6 @@
 var startTime = performance.now();
+var startTimeZoom;
 var newTime;
-var i = 0;
 
 var styles = new ol.style.Style({
     stroke: new ol.style.Stroke({
@@ -55,6 +55,13 @@ const olmap = new ol.Map({
         zoom: 4
     })
 }); 
+measureLoad();
+olmap.on('movestart', function(){
+    startTimeZoom = performance.now();
+});
+olmap.on('moveend', function(){
+    measureZoom();
+});
 
 var selected = null;
 var featureClicked = null;
@@ -70,16 +77,19 @@ var getCountryname = function(pixel){
 };
 
 olmap.on('pointermove', function(e){
-    if (selected !== null) {
-        selected.setStyle(undefined);
-        selected = null;
-    }
-    if(selected.setStyle(clickedStyles)){
-
+    if (selected !== null){
+            selected.setStyle(undefined);
+            selected = null;
     }
     olmap.forEachFeatureAtPixel(e.pixel, function(f){
         selected = f;
-        f.setStyle(highlightStyles);
+        if(f.setStyle(clickedStyles)){
+            f.setStyle(clickedStyles);
+            console.log();
+                        
+        }else{
+            f.setStyle(highlightStyles);
+        }
         return true;
     });
 });
@@ -96,10 +106,17 @@ olmap.on('click', function(e){
         return true;
     });
 });
+function measureLoad(){
+    olmap.once('rendercomplete', function(){
+        newTime = performance.now();
+        console.log("Refresh loadtime: " + (newTime - startTime) + " ms");
+    });
+}
 
-/*olmap.on('rendercomplete', function(){
-    newTime = performance.now();
-    console.log("Loadtime: " + (newTime - startTime) + " ms", i++);
-});*/
-
+function measureZoom() {
+    olmap.once('rendercomplete', function(){
+        newTime = performance.now();
+        console.log("Zoom loadtime: " + (newTime - startTimeZoom) + " ms");
+    });
+}
 

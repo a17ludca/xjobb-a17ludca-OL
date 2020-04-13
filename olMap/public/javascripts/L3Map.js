@@ -1,6 +1,6 @@
 var startTime = performance.now();
+var startTimeZoom;
 var newTime;
-var loadTime;
 var l3map = L.map('l3Map').setView([37.8, -96.9], 4);
 var search = document.getElementById("search");
 
@@ -21,9 +21,9 @@ d3.json(overlay, function(collection) {
     var feature = g.selectAll("path")
         .data(collection.features)
         .enter().append("path")
-        .on("click", function(b){findCountry(b); clicked.call(this, onclickTimer());});
+        .on("click", function(b){findCountry(b); clicked.call(this);});
 
-    l3map.on("zoom", reset);
+    l3map.on("zoom",function(){startZoom(); reset()});
     reset();
 
     function reset(){
@@ -38,17 +38,31 @@ d3.json(overlay, function(collection) {
         svg.selectAll("g")
             .attr("transform", "translate(" + -topLeft[0] + "," + -topLeft[1] + ")")    
         feature.attr("d", path);
+        measureLoad();
+        measureZoom();
     }
     
     function projectPoint(x, y) {
         var point = l3map.latLngToLayerPoint(new L.LatLng(y, x));
         this.stream.point(point.x, point.y);
     }
-    newTime = performance.now();
-    console.log("Loadtime: " + (newTime - startTime) + " ms");
 });
+function startZoom(){
+    startTimeZoom = performance.now();
+    console.log("test");
+}
+function measureLoad(){
+    newTime = performance.now();
+    console.log("Refresh loadtime: " + (newTime - startTime) + " ms");
+}
+function measureZoom(){
+    newTime = performance.now();
+    console.log("Zoom loadtime: " + (newTime - startTimeZoom) + " ms");
+}
 
-function clicked(onclickTimer){
+
+
+function clicked(){
     if(!d3.select(this).classed('clicked')){
         d3.select('.clicked').classed('clicked', false);
         d3.select(this).classed('clicked', true);
@@ -56,15 +70,11 @@ function clicked(onclickTimer){
         d3.select(this).classed('clicked', false);
         search.value = "";
     }
-    var onclickEnd = performance.now();
-    console.log("Load for click: " + (onclickEnd - onclickTimer) + " ms");
 }
-var onclickTimer = function(){
-    var temp = performance.now();
-    return temp;
-}
+
 
 function findCountry(b){
     term = b.properties.ADMIN;
     search.value = term;
 }
+
