@@ -71,7 +71,10 @@ var getCountryname = function(pixel){
 
 olmap.on('pointermove', function(e){
     if (selected !== null && featureClicked == null) {
-        selected.setStyle(styles);
+        selected.setStyle(undefined);
+        selected = null;
+    }else if(featureClicked !== null && featureClicked == selected){
+        selected.setStyle(clickedStyle);
     }
     olmap.forEachFeatureAtPixel(e.pixel, function(f){
         selected = f;
@@ -82,8 +85,9 @@ olmap.on('pointermove', function(e){
 
 olmap.on('click', function(e){
     getCountryname(e.pixel);
-    if (featureClicked !== null) {
-        featureClicked.setStyle(styles);
+    if (featureClicked !== null && selected == null) {
+        featureClicked.setStyle(undefined);
+        featureClicked = null;
     }
     olmap.forEachFeatureAtPixel(e.pixel, function(f){
         featureClicked = f;
@@ -92,9 +96,9 @@ olmap.on('click', function(e){
     });
 });
 
-olmap.on('rendercomplete', function(){
+/*olmap.on('rendercomplete', function(){
     newTime = performance.now();
     console.log("Loadtime: " + (newTime - startTime) + " ms", i++);
-});
+});*/
 
 
