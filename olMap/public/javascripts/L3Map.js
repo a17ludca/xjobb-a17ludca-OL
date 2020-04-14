@@ -51,11 +51,15 @@ function startZoom(){
 }
 function measureLoad(){
     newTime = performance.now();
-    console.log("Refresh loadtime: " + (newTime - startTime) + " ms");
+    var rfshLoad = newTime - startTime;
+    var temp = rfshLoad.toFixed(2);
+    console.log("Refresh loadtime: " + temp + " ms");
 }
 function measureZoom(){
     newTime = performance.now();
-    console.log("Zoom loadtime: " + (newTime - startTimeZoom) + " ms");
+    var zoomLoad = newTime - startTimeZoom;
+    var temp = zoomLoad.toFixed(2);
+    console.log("Refresh loadtime: " + temp + " ms");
 }
 
 mapLayer.on('load', measureZoom);
