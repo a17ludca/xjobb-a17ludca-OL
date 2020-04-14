@@ -83,13 +83,7 @@ olmap.on('pointermove', function(e){
     }
     olmap.forEachFeatureAtPixel(e.pixel, function(f){
         selected = f;
-        if(f.setStyle(clickedStyles)){
-            f.setStyle(clickedStyles);
-            console.log();
-                        
-        }else{
-            f.setStyle(highlightStyles);
-        }
+        f.setStyle(highlightStyles);
         return true;
     });
 });

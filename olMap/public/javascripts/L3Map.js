@@ -4,7 +4,7 @@ var newTime;
 var l3map = L.map('l3Map').setView([37.8, -96.9], 4);
 var search = document.getElementById("search");
 
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+var mapLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(l3map);
 
@@ -23,7 +23,7 @@ d3.json(overlay, function(collection) {
         .enter().append("path")
         .on("click", function(b){findCountry(b); clicked.call(this);});
 
-    l3map.on("zoom",function(){startZoom(); reset()});
+    l3map.on("zoom", function(){startZoom(); reset();});
     reset();
 
     function reset(){
@@ -38,18 +38,16 @@ d3.json(overlay, function(collection) {
         svg.selectAll("g")
             .attr("transform", "translate(" + -topLeft[0] + "," + -topLeft[1] + ")")    
         feature.attr("d", path);
-        measureLoad();
-        measureZoom();
     }
     
     function projectPoint(x, y) {
         var point = l3map.latLngToLayerPoint(new L.LatLng(y, x));
         this.stream.point(point.x, point.y);
     }
+    measureLoad();
 });
 function startZoom(){
     startTimeZoom = performance.now();
-    console.log("test");
 }
 function measureLoad(){
     newTime = performance.now();
@@ -60,7 +58,7 @@ function measureZoom(){
     console.log("Zoom loadtime: " + (newTime - startTimeZoom) + " ms");
 }
 
-
+mapLayer.on('load', measureZoom);
 
 function clicked(){
     if(!d3.select(this).classed('clicked')){
@@ -71,8 +69,6 @@ function clicked(){
         search.value = "";
     }
 }
-
-
 function findCountry(b){
     term = b.properties.ADMIN;
     search.value = term;
