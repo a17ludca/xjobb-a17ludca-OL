@@ -1,7 +1,8 @@
 var startTime = performance.now();
 var startTimeZoom;
+var loadtimeArr = JSON.parse(localStorage.getItem('Refresh Loadtimes')) || [];
 var newTime;
-var l3map = L.map('l3Map').setView([37.8, -96.9], 4);
+var l3map = L.map('l3Map').setView([37.8, -96.9], 18);
 var search = document.getElementById("search");
 
 var mapLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -44,7 +45,7 @@ d3.json(overlay, function(collection) {
         var point = l3map.latLngToLayerPoint(new L.LatLng(y, x));
         this.stream.point(point.x, point.y);
     }
-    measureLoad();
+    //measureLoad();
 });
 function startZoom(){
     startTimeZoom = performance.now();
@@ -53,13 +54,17 @@ function measureLoad(){
     newTime = performance.now();
     var rfshLoad = newTime - startTime;
     var temp = rfshLoad.toFixed(2);
-    console.log("Refresh loadtime: " + temp + " ms");
+    loadtimeArr.push(temp);
+    localStorage.setItem('Refresh Loadtimes', JSON.stringify(loadtimeArr));
+    console.log("Refresh loadtime: " + JSON.stringify(loadtimeArr));
 }
 function measureZoom(){
     newTime = performance.now();
     var zoomLoad = newTime - startTimeZoom;
     var temp = zoomLoad.toFixed(2);
-    console.log("Refresh loadtime: " + temp + " ms");
+    loadtimeArr.push(temp);
+    localStorage.setItem('Refresh Loadtimes', JSON.stringify(loadtimeArr));
+    console.log("Refresh loadtime: " + JSON.stringify(loadtimeArr));
 }
 
 mapLayer.on('load', measureZoom);

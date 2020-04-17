@@ -15,18 +15,40 @@ body {
   position: relative;
 }
 
-
 #search {
   position: absolute;
   border: 1px solid #000;
-  background-color: rgba(255,255,255,0.6);
+  display: flex;
+  background-color: rgba(255,255,255,0.9);
   border-radius: 4px;
   z-index: 500;
+  margin-left: 45%;
   padding: 10px;
-  margin: 0 auto;
   justify-content: center;
-  bottom: 10px;
+  top: 10px;
   font-size: 14px;
+}
+
+#start {
+  position: absolute;
+  z-index: 600;
+  text-align: center;
+  height: 45px;
+  width: 65px;
+  font-weight: bold;
+  margin-left: 33%;
+  bottom: 15px;
+}
+
+#send {
+  position: absolute;
+  z-index: 600;
+  text-align: center;
+  height: 45px;
+  width: 65px;
+  font-weight: bold;
+  margin-left: 67%;
+  bottom: 15px;
 }
 
 path {

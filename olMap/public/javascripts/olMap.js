@@ -1,4 +1,5 @@
 var startTime = performance.now();
+var loadtimeArr = JSON.parse(localStorage.getItem('Refresh Loadtimes')) || [];
 var startTimeZoom;
 var newTime;
 
@@ -51,11 +52,11 @@ const olmap = new ol.Map({
     target: 'olMap',
     layers: [osmMap, vectorLayer], 
     view: new ol.View({
-        center: [37.8, -96.9],
-        zoom: 4
+        center: ol.proj.fromLonLat([-96.9, 37.8]),
+        zoom: 19
     })
 }); 
-measureLoad();
+//measureLoad();
 olmap.on('movestart', function(){
     startTimeZoom = performance.now();
 });
@@ -103,14 +104,22 @@ olmap.on('click', function(e){
 function measureLoad(){
     olmap.once('rendercomplete', function(){
         newTime = performance.now();
-        console.log("Refresh loadtime: " + (newTime - startTime) + " ms");
+        var rfshLoad = newTime - startTime;
+        var temp = rfshLoad.toFixed(2);
+        loadtimeArr.push(temp);
+        localStorage.setItem('Refresh Loadtimes', JSON.stringify(loadtimeArr));
+        console.log("Refresh loadtime: " + JSON.stringify(loadtimeArr));
     });
 }
 
 function measureZoom() {
     olmap.once('rendercomplete', function(){
         newTime = performance.now();
-        console.log("Zoom loadtime: " + (newTime - startTimeZoom) + " ms");
+        var zoomLoad = newTime - startTimeZoom;
+        var temp = zoomLoad.toFixed(2);
+        loadtimeArr.push(temp);
+        localStorage.setItem('Refresh Loadtimes', JSON.stringify(loadtimeArr));
+        console.log("Refresh loadtime: " + JSON.stringify(loadtimeArr));
     });
 }
 
