@@ -13,10 +13,11 @@ var svg = d3.select(l3map.getPanes().overlayPane).append("svg"),
     g = svg.append("g").attr("class", "leaflet-zoom-hide");
 
 var overlay = "/data/countries.geojson";
-d3.json(overlay, function(error, collection) {
-    if (error) throw error;
-    var transform = d3.geo.transform({point: projectPoint}),
-        path = d3.geo.path().projection(transform);
+d3.json(overlay).then(function(collection) {
+    console.log("test");
+    
+    var transform = d3.geoTransform({point: projectPoint}),
+        path = d3.geoPath().projection(transform);
     
     var feature = g.selectAll("path")
         .data(collection.features)

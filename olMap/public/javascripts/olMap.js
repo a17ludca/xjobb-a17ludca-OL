@@ -39,7 +39,7 @@ var vectorSource = new ol.source.Vector({
     
 });
 
-var vectorLayer = new ol.source.Vector({
+var vectorLayer = new ol.layer.Vector({
     source: vectorSource,
     style: styles
 });
