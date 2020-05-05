@@ -2,20 +2,19 @@ var startTime = performance.now();
 var startTimeZoom;
 var loadtimeArr = JSON.parse(localStorage.getItem('Refresh Loadtimes')) || [];
 var newTime;
-var l3map = L.map('l3Map').setView([37.8, -96.9], 18);
+var l3map = L.map('l3Map').setView([37.8, -96.9], 4);
 var search = document.getElementById("search");
 
 var mapLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(l3map);
 
-
-
 var svg = d3.select(l3map.getPanes().overlayPane).append("svg"),
     g = svg.append("g").attr("class", "leaflet-zoom-hide");
 
-var overlay = "data/countries.geojson";
-d3.json(overlay, function(collection) {
+var overlay = "/data/countries.geojson";
+d3.json(overlay, function(error, collection) {
+    if (error) throw error;
     var transform = d3.geo.transform({point: projectPoint}),
         path = d3.geo.path().projection(transform);
     
@@ -55,16 +54,16 @@ function measureLoad(){
     var rfshLoad = newTime - startTime;
     var temp = rfshLoad.toFixed(2);
     loadtimeArr.push(temp);
-    localStorage.setItem('Refresh Loadtimes', JSON.stringify(loadtimeArr));
-    console.log("Refresh loadtime: " + JSON.stringify(loadtimeArr));
+    //localStorage.setItem('Refresh Loadtimes', JSON.stringify(loadtimeArr));
+    //console.log("Refresh loadtime: " + JSON.stringify(loadtimeArr));
 }
 function measureZoom(){
     newTime = performance.now();
     var zoomLoad = newTime - startTimeZoom;
     var temp = zoomLoad.toFixed(2);
     loadtimeArr.push(temp);
-    localStorage.setItem('Refresh Loadtimes', JSON.stringify(loadtimeArr));
-    console.log("Refresh loadtime: " + JSON.stringify(loadtimeArr));
+    //localStorage.setItem('Refresh Loadtimes', JSON.stringify(loadtimeArr));
+    //console.log("Refresh loadtime: " + JSON.stringify(loadtimeArr));
 }
 
 mapLayer.on('load', measureZoom);

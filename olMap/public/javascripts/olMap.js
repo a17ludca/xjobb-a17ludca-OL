@@ -39,7 +39,7 @@ var vectorSource = new ol.source.Vector({
     
 });
 
-var vectorLayer = new ol.layer.Vector({
+var vectorLayer = new ol.source.Vector({
     source: vectorSource,
     style: styles
 });
@@ -53,7 +53,7 @@ const olmap = new ol.Map({
     layers: [osmMap, vectorLayer], 
     view: new ol.View({
         center: ol.proj.fromLonLat([-96.9, 37.8]),
-        zoom: 19
+        zoom: 4
     })
 }); 
 //measureLoad();
