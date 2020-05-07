@@ -53,7 +53,7 @@ const olmap = new ol.Map({
     layers: [osmMap, vectorLayer], 
     view: new ol.View({
         center: ol.proj.fromLonLat([-96.9, 37.8]),
-        zoom: 4
+        zoom: 0
     })
 }); 
 //measureLoad();

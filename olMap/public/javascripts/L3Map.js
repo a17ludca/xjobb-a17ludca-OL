@@ -2,7 +2,7 @@ var startTime = performance.now();
 var startTimeZoom;
 var loadtimeArr = JSON.parse(localStorage.getItem('Refresh Loadtimes')) || [];
 var newTime;
-var l3map = L.map('l3Map').setView([37.8, -96.9], 18);
+var l3map = L.map('l3Map').setView([37.8, -96.9], 0);
 var search = document.getElementById("search");
 
 var mapLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
