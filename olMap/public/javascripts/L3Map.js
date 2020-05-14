@@ -2,7 +2,7 @@ var startTime = performance.now();
 var startTimeZoom;
 var loadtimeArr = JSON.parse(localStorage.getItem('Refresh Loadtimes')) || [];
 var newTime;
-var l3map = L.map('l3Map').setView([37.8, -96.9], 0);
+var l3map = L.map('l3Map').setView([37.8, -96.9], 6);
 var search = document.getElementById("search");
 
 var mapLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -81,3 +81,6 @@ function findCountry(b){
     search.value = term;
 }
 
+setTimeout(function(){
+    l3map.panTo([35, 103], {animate: true, duration: 10.0});
+}, 2000);

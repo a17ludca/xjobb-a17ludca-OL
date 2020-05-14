@@ -48,13 +48,15 @@ var osmMap = new ol.layer.Tile({
     source: new ol.source.OSM()
 });
 
+var view = new ol.View({
+    center: ol.proj.fromLonLat([-96.9, 37.8]),
+    zoom: 8
+});
+
 const olmap = new ol.Map({
     target: 'olMap',
     layers: [osmMap, vectorLayer], 
-    view: new ol.View({
-        center: ol.proj.fromLonLat([-96.9, 37.8]),
-        zoom: 0
-    })
+    view: view
 }); 
 //measureLoad();
 olmap.on('movestart', function(){
@@ -123,3 +125,9 @@ function measureZoom() {
     });
 }
 
+setTimeout(function(){
+    view.animate({
+        center: ol.proj.fromLonLat([103, 35]),
+        duration: 10000
+    })
+}, 2000);
